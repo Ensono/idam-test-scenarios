@@ -1,0 +1,76 @@
+[
+    {
+        "scenario": "Should be able to register user with valid registration request payload",
+        "Input": {
+            "options": ["all fields valid", "all required fields valid"]
+        },
+        "response_code": 200,
+        "validation": "Check user is created and exists in DB",
+        "notes": ""
+    },
+    {
+        "scenario": "Should not be able to Register user with Malformed JSON payload",
+        "Input": {
+            "options": 
+                [
+                    "Missing/Empty Headers", 
+                    "Missing/Empty Required Fields",
+                    "Incorrect values/Incorrect Format for Required Fields",
+                    "Various combinations of invalid email formats"
+                ]
+        },
+        "response_code": 400,
+        "checks": "Check no record is created in DB",
+        "notes": ""
+    },
+    {
+        "scenario": "Verify user registration",
+        "Input": {
+            "options": ["Valid request", "Invalid request"]
+        },
+        "response_code": [200,400,403],
+        "checks": 
+            [
+                "Check user status changes from unverified to verified",
+                "Check user status doesn't change. User should still be unverified."
+            ],
+
+        "notes": "Following registration, users normally need to click a link in email to verify their email account."
+    },
+    {
+        "scenario": "Should not be able to register the same user twice",
+        "Input": {
+            "options": ["valid payload"]
+        },
+        "response_code": 403,
+        "checks": "Appropriate message is thrown",
+        "notes": ""
+    },
+    {
+        "scenario": "Should not be able to register user with restricted passwords",
+        "Input": {
+            "options": "All fields valid, but restricted passwords"
+        },
+        "response_code": 400,
+        "checks": "Check error message is apporpriate",
+        "notes": "Restricted passwords are the ones that have already been hacked and put on pastebins. HIBP (HaveIBeenPawned.com) has a list of hacked passwords"
+    },
+    {
+        "scenario": "Should not be able to register user with easy to guess passwords",
+        "Input": {
+            "options": "All fields valid, but easy to guess password"
+        },
+        "response_code": 400,
+        "checks": "Check error message is apporpriate",
+        "notes": "There are a list of top xx list of passwords that are common and easy to hack so should be avoided in registration."
+    },
+    {
+        "scenario": "Should not be able to set password the same as username",
+        "Input": {
+            "options": ["All fields valid, but password same as username"]
+        },
+        "response_code": 400,
+        "checks": "Check error message is apporpriate",
+        "notes": ""
+    }
+]
